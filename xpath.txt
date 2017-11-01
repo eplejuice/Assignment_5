@@ -1,0 +1,53 @@
+root = $x('//SkierLogs/..')[0]
+
+
+1)
+$x('SkierLogs/Season/@fallYear', root)
+(2) [fallyear, fallyear]
+
+
+2)
+$x('SkierLogs/Season/Skiers/Skier[@userName = "mari_dahl"]/Log/Entry', root)
+(59) [entry, entry, ...]
+
+
+3)
+$x('SkierLogs/Season[@fallYear = "2015"]/Skiers[@clubId = "vindil"]/Skier/Log[sum(Entry/Distance) > 10]', root)
+(5) [log, log, log, log, log]
+
+
+4)
+$x('SkierLogs/Season[@fallYear = "2016"]/Skiers/Skier/@userName[../Log/Entry[contains(Area, "Venabygd")]]', root)
+(17) [username, username, username, etc..)
+
+
+5)
+$x('count(SkierLogs/Skiers/Skier[YearOfBirth >= 2002 and YearOfBirth <= 2004])', root)
+42
+
+
+6)
+$x('SkierLogs/Season[@fallYear = "2016"]/Skiers/Skier[@userName = "idar_kals1"]/Log/Entry[Area = "Lygna"]/Date', root)
+(3) [date, date, date]
+
+
+7)
+$x('sum(SkierLogs/Season[@fallYear = "2015"]/Skiers/Skier/Log/Entry/Distance)', root)
+20164
+
+
+8)
+$x('sum(SkierLogs/Season[@fallYear = "2015"]/Skiers[not(@clubId)]/Skier/Log/Entry/Distance)', root)
+587
+
+
+
+9)
+$x('SkierLogs/Skiers/Skier[@userName = ../../Season[@fallYear = 2015]/Skiers[@clubId = ../../Clubs/Club/@id[/../County = "Oppland"]] /Skier/@userName]', root)
+(34)
+
+
+
+10)
+$x('SkierLogs/Skiers/Skier[@userName = ../../Season[@fallYear = 2015]/Skiers/Skier/@userName[../Log/Entry/Area = "Nordseter"] and not(@userName = ../../Season[@fallYear = 2016]/Skiers/Skier/@userName[../Log/Entry/Area = "Nordseter"])]', root)
+(5) [skier, skier, skier,skier,skier]
