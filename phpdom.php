@@ -43,4 +43,46 @@ function kjorDOMSkier($controller){
             }
           }
   }
+
+  function kjorDOMRepresent($controller){
+    
+      $doc = new DOMDocument();
+        if (!$doc->load('SkierLogs.xml')) {
+          echo "feil ved lasting av dokument";
+            } 
+        else {
+            $xpath = new DOMXpath($doc);
+            foreach($xpath->query("/SkierLogs/Season") as $element){
+            $fallYear = $element->getAttribute('fallYear');
+            foreach($xpath->query("/SkierLogs/Season[@fallYear = $fallYear]/Skiers") as $element){
+              if($element->hasAttribute('clubId')){
+                  
+                $clubId = $element->getAttribute('clubId');
+                foreach($xpath->query("/SkierLogs/Season[@fallYear = $fallYear]/Skiers[@clubId = \"$clubId\"]/Skier") as $element){
+                $userName = $element->getAttribute('userName');
+                $totalDistance = 0;
+                foreach($xpath->query("/SkierLogs/Season[@fallYear = $fallYear]/Skiers[@clubId = \"$clubId\"]/Skier[@userName = \"$userName\"]/Log/Entry/Distance") as $temp){
+                  $totalDistance += $temp->nodeValue;
+                }
+               $controller->addRepresent(new represent($userName, $clubId, $fallYear, $totalDistance));
+                      }
+
+              }
+              else
+              {
+                $clubId = NULL;
+                foreach($xpath->query("/SkierLogs/Season[@fallYear = $fallYear]/Skiers[not(@clubId)]/Skier") as $element){
+                $userName = $element->getAttribute('userName');
+                $totalDistance = 0;
+                foreach($xpath->query("/SkierLogs/Season[@fallYear = $fallYear]/Skiers[not(@clubId)]/Skier[@userName = \"$userName\"]/Log/Entry/Distance") as $temp){
+                  $totalDistance += $temp->nodeValue;
+                }
+               $controller->addRepresent(new represent($userName, $clubId, $fallYear, $totalDistance));
+                      }
+                  }
+            
+                }
+              }
+            }
+    }
 ?>

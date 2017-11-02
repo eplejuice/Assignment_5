@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2017 at 10:24 AM
+-- Generation Time: Nov 02, 2017 at 02:58 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `club` (
-  `clubID` int(11) NOT NULL,
+  `clubID` varchar(60) COLLATE utf8_bin NOT NULL,
   `name` varchar(60) COLLATE utf8_bin NOT NULL,
   `city` varchar(250) COLLATE utf8_bin NOT NULL,
   `county` varchar(250) COLLATE utf8_bin NOT NULL
@@ -43,8 +43,8 @@ CREATE TABLE `club` (
 
 CREATE TABLE `represent` (
   `userName` varchar(60) COLLATE utf8_bin NOT NULL,
-  `clubID` int(11) NOT NULL,
-  `season` varchar(4) NOT NULL,
+  `clubID` varchar(60) COLLATE utf8_bin DEFAULT NULL,
+  `season` varchar(4) COLLATE utf8_bin NOT NULL,
   `totalDistance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -56,9 +56,9 @@ CREATE TABLE `represent` (
 
 CREATE TABLE `skier` (
   `userName` varchar(60) COLLATE utf8_bin NOT NULL,
-  `firstName` varchar(60) NOT NULL,
-  `lastName` varchar(60) NOT NULL,
-  `YearOfBirth` date NOT NULL
+  `firstName` varchar(60) COLLATE utf8_bin NOT NULL,
+  `lastName` varchar(60) COLLATE utf8_bin NOT NULL,
+  `YearOfBirth` varchar(4) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
@@ -75,7 +75,7 @@ ALTER TABLE `club`
 -- Indexes for table `represent`
 --
 ALTER TABLE `represent`
-  ADD PRIMARY KEY (`userName`,`clubID`),
+  ADD PRIMARY KEY (`userName`,`season`) USING BTREE,
   ADD KEY `clubID` (`clubID`);
 
 --
@@ -92,8 +92,8 @@ ALTER TABLE `skier`
 -- Constraints for table `represent`
 --
 ALTER TABLE `represent`
-  ADD CONSTRAINT `represent_ibfk_1` FOREIGN KEY (`clubID`) REFERENCES `club` (`clubID`),
-  ADD CONSTRAINT `represent_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `skier` (`userName`);
+  ADD CONSTRAINT `represent_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `skier` (`userName`),
+  ADD CONSTRAINT `represent_ibfk_3` FOREIGN KEY (`clubID`) REFERENCES `club` (`clubID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

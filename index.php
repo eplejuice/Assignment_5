@@ -5,5 +5,6 @@
 	$controller = new db();
 	kjorDomClub($controller);
 	kjorDomSkier($controller);
+	kjorDOMRepresent($controller);
 
 ?>
